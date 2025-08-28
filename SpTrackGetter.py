@@ -20,9 +20,10 @@ import re
 import base64
 import requests
 import argparse
-from datetime import datetime, timedelta
 from urllib.parse import quote
+from sseclient import SSEClient
 from dotenv import dotenv_values
+from datetime import datetime, timedelta
 
 spotify_url_pattern = r"https:\/\/open\.spotify\.com\/track\/[\w?=\-&]+"
 
@@ -30,6 +31,7 @@ class SpTrackGetter:
     _api_auth_url = "https://accounts.spotify.com/api/token"
     _api_tracks_url = "https://api.spotify.com/v1/tracks/"
     _api_audio_features_url = "https://soundstat.info/api/v1/track/"
+    _api_audio_features_status_url = "https://soundstat.info/api/v1/track/{}/status"
     _search_url = "https://www.youtube.com/results?search_query={}"
 
     def __init__(self, url: str, client_id: str, client_secret: str, soundstat_key: str=""):
@@ -79,7 +81,7 @@ class SpTrackGetter:
             self.release_date = data["album"]["release_date"]
             self.cover_arts = data["album"]["images"]
             self.popularity = data["popularity"]
-            self.youtube_search_url = self.get_track_search_url(self.artists[0].name, self.title)
+            self.youtube_search_url = self.get_track_search_url(self.artists[0]["name"], self.title)
 
         if self.__soundstat_key != "":
             # Get audio features
@@ -95,6 +97,26 @@ class SpTrackGetter:
                 self.tempo = data["features"]["tempo"]
             else:
                 self.audio_features_in_progress = True
+
+    def listen_track_features_status(self, track_id: str, timeout: int|float|None=None):
+        header = {"accept" : "application/json",
+                  "x-api-key": self.__soundstat_key}
+        url = self._api_audio_features_status_url.format(track_id)
+
+        try:
+            with requests.get(url, headers=header, stream=True, timeout=timeout) as response:
+                response.raise_for_status()
+                client = SSEClient(response)
+                for event in client.events():
+                    if event.event in ("complete", "error"):
+                        return event.event, event.data
+
+                # Loop exited without "complete" or "error"
+                return "disconnected", None
+        except requests.RequestException as e:
+            return "network_error", str(e)
+        except Exception as e:
+            return "error", str(e)
 
     def _get_track_json(self, track_id: str) -> dict:
         header = {"Authorization": f"Bearer {self.__access_token}"}
