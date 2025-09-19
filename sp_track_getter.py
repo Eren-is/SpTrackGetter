@@ -86,8 +86,6 @@ class SpTrackGetter:
 
         self.url = url
         self.id = self.get_id_from_url(url)
-        self.rec_audio_features_not_found = False
-        self.ss_track_analysing = False
 
         if use_sp_api_ is True:
             # Make sure we have an API token
@@ -97,6 +95,7 @@ class SpTrackGetter:
             self.load_sp_data(data)
 
         if use_rec_api_ is True:
+            self.rec_audio_features_not_found = False
             data = self._rec_get_audio_features_data()
             if len(data) > 0 and data["content"] != []:
                 self.load_rec_data(data)
@@ -110,6 +109,7 @@ class SpTrackGetter:
             if self.rec_fallback_to_ss is True and self.rec_audio_features_not_found is False:
                 return
 
+            self.ss_track_analysing = False
             data = self._ss_get_audio_features_data()
             if self.ss_track_analysing is False:
                 self.load_ss_data(data)
