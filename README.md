@@ -1,4 +1,4 @@
-# SpTrackGetter
+# sp_track_getter
 
 ## Aggregates Spotify song/track data using Spotify API with audio features data from ReccoBeats and/or SoundStat.
 Additionally creates a YouTube search url (artist + title as search query) (only after getting data from Spotify API).
