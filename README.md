@@ -92,8 +92,17 @@ track.dump_data()
 print(f"Title: {track.data["name"]}")
 print(f"Artist: {track.data["artists"][0]["name"]}")
 print(f"Album: {track.data["album"]["name"]}")
+print(f"YouTube search URL: {track.youtube_search_url}")
 if track.rec_audio_features_not_found is False:
     print(f"Track's valence: {track.data["valence"]}")
 else:
     print("Track's audio features not found in ReccoBeats")
+
+# Output:
+# *track.data dictionary dump*
+# Title: Rule #46 - Poet
+# Artist: Fish in a Birdcage
+# Album: Mentors
+# YouTube search URL: https://www.youtube.com/results?search_query=Fish%20in%20a%20Birdcage%20Rule%20%2346%20-%20Poet
+# Track's valence: 0.632
 ```

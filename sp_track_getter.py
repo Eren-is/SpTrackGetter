@@ -286,6 +286,7 @@ if __name__ == "__main__":
     print(f"Title: {track.data["name"]}")
     print(f"Artist: {track.data["artists"][0]["name"]}")
     print(f"Album: {track.data["album"]["name"]}")
+    print(f"YouTube search URL: {track.youtube_search_url}")
     if track.rec_audio_features_not_found is False:
         print(f"Track's valence: {track.data["valence"]}")
     else:
