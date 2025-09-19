@@ -34,6 +34,7 @@ Audio features:
     - Valence
 
 ## SpTrackGetter arguments
+When creating a new SpTrackGetter instance, you can configure it with the following parameters:
 | Argument                | Type   | Default | Description                                                                                    |
 | ----------------------- | ------ | ------- | ---------------------------------------------------------------------------------------------- |
 | `url`                   | `str`  | `""`    | The track URL to process. Leave empty if you plan to provide the URL later via method calls.   |
@@ -45,6 +46,14 @@ Audio features:
 | `ss_api_key`            | `str`  | `""`    | API key for the SoundStat API (required if `use_ss_api=True`).                                        |
 | `ss_convert_vals_to_sp` | `bool` | `True`  | If `True`, values returned from the SoundStat API will be converted into Spotify-compatible values.  |
 | `rec_fallback_to_ss`    | `bool` | `False` | If `True`, when the ReccoBeats API doesn't return audio features data, the SoundStat API will be used as a fallback.              |
+
+Example:
+```python
+from SpTrackGetter import SpTrackGetter
+
+track = SpTrackGetter(use_rec_api=True)
+track.load_track_data(url="https://open.spotify.com/track/25mgvKnePKbDpStpjy9sT1")
+```
 
 ## ReccoBeats API
 When using [ReccoBeats API](https://reccobeats.com) if no audio feature data was found/returned variable `rec_audio_features_not_found` will be set to `True`.
