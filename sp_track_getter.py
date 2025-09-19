@@ -99,7 +99,6 @@ class SpTrackGetter:
         if use_rec_api_ is True:
             data = self._rec_get_audio_features_data()
             if len(data) > 0 and data["content"] != []:
-                print(data)
                 self.load_rec_data(data)
             else:
                 self.rec_audio_features_not_found = True
