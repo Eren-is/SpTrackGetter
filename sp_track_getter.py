@@ -27,7 +27,7 @@ from sseclient import SSEClient
 from datetime import datetime, timedelta
 
 class SpTrackGetter:
-    SP_URL_PATTERN = r"https:\/\/open\.spotify\.com\/track\/[\w?=\-&]+"
+    SP_URL_PATTERN = r"https:\/\/open\.spotify\.com\/[\w\-\/]*track\/[\w?=\-&]+"
     YT_SEARCH_URL = "https://www.youtube.com/results?search_query={}"
     SP_API_AUTH_URL = "https://accounts.spotify.com/api/token"
     SP_API_TRACKS_URL = "https://api.spotify.com/v1/tracks/"
